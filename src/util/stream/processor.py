@@ -1,37 +1,18 @@
 import cv2 as cv
 from multiprocessing import JoinableQueue
 import yaml
+from ...my_object import MyObject
 
 with open("./config.yaml") as handler:
     config = yaml.load(handler, yaml.FullLoader)
 
 
-class MyModel:
-    def __init__(self, foo) -> None:
-        self.foo = foo
-        self.local_state = 0
-
-    def __call__(self, img_batch):
-        for im in img_batch:
-            cv.putText(
-                im,
-                f"{self.foo} {self.local_state}",
-                [20, round(im.shape[1] / 1000 * 50)],
-                cv.FONT_HERSHEY_SIMPLEX,
-                round(im.shape[1] / 1000 * 2),
-                (255, 0, 0),
-                round(im.shape[1] / 1000 * 3),
-            )
-            self.local_state += 1
-        return img_batch
-
-
-def antt_process(
+def process_job(
     queue: JoinableQueue,
     batch_sz: int = 1,
     video_strm: str = config["source_stream"]["url"],
 ) -> None:
-    model = MyModel("bar")
+    model = MyObject("bar")
     capture = cv.VideoCapture(video_strm)
     img_batch = []
     while True:

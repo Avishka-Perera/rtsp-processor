@@ -2,4 +2,4 @@
 nohup ./mediamtx > mediamtx.log &
 
 # start the main script
-nohup python src/main.py > main.log &
+nohup python main.py > main.log &

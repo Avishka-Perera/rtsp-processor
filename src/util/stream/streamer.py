@@ -15,7 +15,7 @@ rtsp_server_address = (
 )
 
 
-def strm_process(image_queue: JoinableQueue):
+def stream_job(image_queue: JoinableQueue):
     ffmpeg_cmd = [
         "ffmpeg",
         "-re",
