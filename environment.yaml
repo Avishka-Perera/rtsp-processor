@@ -1,0 +1,13 @@
+name: rs
+channels:
+    - conda-forge
+    - defaults
+dependencies:
+    - python=3.10
+    - ffmpeg=6.1.1
+    - pip=23.2.1
+    - pip:
+          - ipykernel
+          - ipywidgets
+          - opencv-python==4.9.0.80
+          - pyyaml==6.0.1
