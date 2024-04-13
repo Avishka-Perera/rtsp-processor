@@ -12,7 +12,7 @@ If the user intends to use FFmpeg, they may simply create the environment from t
 bash ./install.sh
 ```
 
-    Note: This script is prepared and tested on an Ubuntu 22.04 system. The exact steps might change based on your operating system. Please refer to the official documentation in case of failure.
+**Note: This script is prepared and tested on an Ubuntu 22.04 system. The exact steps might change based on your operating system. Please refer to the official documentation in case of failure.**
 
 # Usage
 
