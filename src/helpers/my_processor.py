@@ -1,7 +1,7 @@
 import cv2 as cv
 
 
-class MyObject:
+class MyProcessor:
     def __init__(self, foo) -> None:
         self.foo = foo
         self.local_state = 0

@@ -1,7 +1,6 @@
 fps: 25
 source_stream:
     url: rtsp://localhost:8554/rawstream
-    size: [720, 576]
 sink_stream:
     url: rtsp://localhost:8554/livestream
-    size: [720, 576]
+    size: [640, 480]

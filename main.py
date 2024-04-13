@@ -1,6 +1,6 @@
 from multiprocessing import JoinableQueue, Process
-from src.util.stream.processor import process_job
-from src.util.stream.streamer import stream_job
+from src.stream.process import process_job
+from src.stream.stream import stream_job
 import yaml
 
 

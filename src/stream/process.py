@@ -1,6 +1,6 @@
 import cv2 as cv
 from multiprocessing import JoinableQueue
-from ...my_object import MyObject
+from ..helpers.my_processor import MyProcessor
 from typing import Dict
 
 
@@ -10,7 +10,7 @@ def process_job(
     batch_sz: int = 1,
 ) -> None:
     source_url = config["source_stream"]["url"]
-    model = MyObject("bar")
+    model = MyProcessor("bar")
     capture = cv.VideoCapture(source_url)
     img_batch = []
     while True:
