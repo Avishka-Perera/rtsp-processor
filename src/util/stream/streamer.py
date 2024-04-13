@@ -2,20 +2,14 @@ from multiprocessing import JoinableQueue
 import subprocess
 import queue
 import cv2
-import yaml
-
-with open("./config.yaml") as handler:
-    config = yaml.load(handler, yaml.FullLoader)
-
-sz = config["source_stream"]["size"]
-width, height = sz["width"], sz["height"]
-fps = config["source_stream"]["fps"]
-rtsp_server_address = (
-    f"rtsp://localhost:{config['sink_stream']['port']}/{config['sink_stream']['path']}"
-)
+from typing import Dict
 
 
-def stream_job(image_queue: JoinableQueue):
+def stream_job(image_queue: JoinableQueue, config: Dict):
+    fps = str(config["fps"])
+    sink_url = config["sink_stream"]["url"]
+    width, height = config["sink_stream"]["size"]
+
     ffmpeg_cmd = [
         "ffmpeg",
         "-re",
@@ -33,7 +27,7 @@ def stream_job(image_queue: JoinableQueue):
         "libx264",
         "-f",
         "rtsp",
-        rtsp_server_address,
+        sink_url,
     ]
 
     process = subprocess.Popen(ffmpeg_cmd, stdin=subprocess.PIPE)

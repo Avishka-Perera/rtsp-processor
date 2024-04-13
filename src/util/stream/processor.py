@@ -1,19 +1,17 @@
 import cv2 as cv
 from multiprocessing import JoinableQueue
-import yaml
 from ...my_object import MyObject
-
-with open("./config.yaml") as handler:
-    config = yaml.load(handler, yaml.FullLoader)
+from typing import Dict
 
 
 def process_job(
     queue: JoinableQueue,
+    config: Dict,
     batch_sz: int = 1,
-    video_strm: str = config["source_stream"]["url"],
 ) -> None:
+    source_url = config["source_stream"]["url"]
     model = MyObject("bar")
-    capture = cv.VideoCapture(video_strm)
+    capture = cv.VideoCapture(source_url)
     img_batch = []
     while True:
         grabbed, frame = capture.read()

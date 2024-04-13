@@ -1,9 +1,7 @@
+fps: 25
 source_stream:
-    url: rtsp://root:entc@192.248.10.116:554/axis-media/media.amp
-    fps: "25"
-    size:
-        width: 720
-        height: 576
+    url: rtsp://localhost:8554/rawstream
+    size: [720, 576]
 sink_stream:
-    port: 8554
-    path: livestream
+    url: rtsp://localhost:8554/livestream
+    size: [720, 576]
