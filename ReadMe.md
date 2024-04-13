@@ -1,6 +1,6 @@
 # RTSP Processor
 
-This work contains the required scripts to listen to a Real-Time Streaming Protocol Stream, modify it, and publish a new stream. This is a commonly required functionality in real-time inferencing scenarios.
+This work contains the required scripts to listen to a Real-Time Streaming Protocol feed, modify it, and publish a new stream. This is a commonly required functionality in real-time inferencing scenarios.
 
 # Installation
 
