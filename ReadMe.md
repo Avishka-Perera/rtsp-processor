@@ -27,7 +27,7 @@ Each of the following should run on its own shell or in the background concurren
 1. Start the RSTP server: Use the `mediamtx` executable.
 
 ```bash
-bash ./mediamtx
+./mediamtx
 ```
 
 2. Start the _mockstream_ using the `src/helpers/mockstream.py` script. This script streams a set of images in a directory in a loop, sorted according to the file name.
