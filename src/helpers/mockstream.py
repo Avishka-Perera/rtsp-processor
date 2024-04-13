@@ -20,7 +20,7 @@ def parse_args():
         "-i",
         "--image-dir",
         type=str,
-        default="./images",
+        default="./data/images",
         help="The directory that contains the images to be streamed",
     )
     parser.add_argument(
