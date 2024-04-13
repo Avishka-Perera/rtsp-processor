@@ -1,4 +1,4 @@
-fps: 25
+fps: 10
 source_stream:
     url: rtsp://localhost:8554/rawstream
 sink_stream:

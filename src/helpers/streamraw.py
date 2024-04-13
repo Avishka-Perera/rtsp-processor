@@ -1,11 +1,17 @@
+import sys
+import os
+
+root_dir = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, os.pardir))
+sys.path.append(root_dir)
+
 import glob
 from time import sleep, time
-import cv2
 import numpy as np
 from PIL import Image
 import yaml
 from argparse import ArgumentParser
 import ast
+from src.stream.streamer import Streamer
 
 
 def parse_args():
@@ -25,6 +31,21 @@ def parse_args():
         help="Size (width, height) of the images in the stream",
         default=[640, 480],
     )
+    parser.add_argument(
+        "-b",
+        "--backend",
+        type=str,
+        default="opencv",
+        choices=["opencv", "ffmpeg"],
+        help="Backend to be used for streaming",
+    )
+    parser.add_argument(
+        "-c",
+        "--config-path",
+        type=str,
+        default="./config.yaml",
+        help="Path for the config file",
+    )
     args = parser.parse_args()
     return args
 
@@ -32,29 +53,16 @@ def parse_args():
 if __name__ == "__main__":
 
     args = parse_args()
-    with open("./config.yaml") as handler:
+    with open(args.config_path) as handler:
         config = yaml.load(handler, yaml.FullLoader)
 
     fps = config["fps"]
     sink_url = config["source_stream"]["url"]
-    width, height = args.size
+    size = args.size
+    width, height = size
     imgs_dir = args.image_dir
 
-    out = cv2.VideoWriter(
-        "appsrc ! videoconvert"
-        + " ! video/x-raw,format=I420"
-        + " ! x264enc speed-preset=ultrafast bitrate=600 key-int-max="
-        + str(fps * 2)
-        + " ! video/x-h264,profile=baseline"
-        + f" ! rtspclientsink location={sink_url}",
-        cv2.CAP_GSTREAMER,
-        0,
-        fps,
-        (width, height),
-        True,
-    )
-    if not out.isOpened():
-        raise Exception("can't open video writer")
+    streamer = Streamer(sink_url, fps, size, args.backend)
 
     curcolor = 0
     start = time()
@@ -62,15 +70,18 @@ if __name__ == "__main__":
     img_lst = sorted(glob.glob(f"{imgs_dir}/**"))
 
     while True:
-        for img_path in img_lst:
+        for i, img_path in enumerate(img_lst):
             frame = np.array(Image.open(img_path).resize((width, height))).astype(
                 np.uint8
-            )[:, :, ::-1]
+            )
 
-            out.write(frame)
+            print(f"\rframe: {i}", end="")
+            streamer(frame)
 
             now = time()
             diff = (1 / fps) - now - start
             if diff > 0:
                 sleep(diff)
             start = now
+
+    streamer.close()
