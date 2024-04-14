@@ -64,8 +64,8 @@ if __name__ == "__main__":
 
     streamer = Streamer(sink_url, fps, size, args.backend)
 
-    curcolor = 0
     start = time()
+    published_count = 0
 
     img_lst = sorted(glob.glob(f"{imgs_dir}/**"))
 
@@ -75,13 +75,18 @@ if __name__ == "__main__":
                 np.uint8
             )
 
-            print(f"\rframe: {i}", end="")
             streamer(frame)
+            published_count += 1
 
             now = time()
-            diff = (1 / fps) - now - start
+            next_time = start + published_count / fps
+            diff = next_time - now
             if diff > 0:
                 sleep(diff)
-            start = now
+
+            print(
+                f"\rframe: {published_count}       fps: {published_count/(now-start)}",
+                end="",
+            )
 
     streamer.close()

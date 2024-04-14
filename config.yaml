@@ -1,4 +1,5 @@
 fps: 10
+batch_size: 1
 source_stream:
     url: rtsp://localhost:8554/rawstream
 processor:

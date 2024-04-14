@@ -2,6 +2,7 @@ import numpy as np
 from typing import Sequence
 import subprocess
 import cv2
+from time import time
 
 
 class Streamer:
@@ -52,6 +53,7 @@ class Streamer:
             if not cv2_out.isOpened():
                 raise Exception("can't open video writer")
             self.cv2_out = cv2_out
+        self.start = time()
 
     def __call__(self, img: np.ndarray) -> None:
         img = img.astype(np.uint8)
@@ -62,8 +64,9 @@ class Streamer:
         else:
             img = img[:, :, ::-1]
             self.cv2_out.write(img)
-        print(f"\rframe: {self.state}", end="")
         self.state += 1
+        now = time()
+        print(f"\rframe: {self.state}       fps: {self.state/(now-self.start)}", end="")
 
     def close(self) -> None:
         if self.backend == "ffmpeg":
