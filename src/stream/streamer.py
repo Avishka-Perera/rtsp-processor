@@ -10,7 +10,7 @@ class Streamer:
         self, url: str, fps: int, size: Sequence[int], backend: str = "opencv"
     ) -> None:
         assert backend in ["opencv", "ffmpeg"]
-        self.state = 0
+        self.published_count = 0
         self.url = url
         self.backend = backend
         self.size = size
@@ -55,18 +55,25 @@ class Streamer:
             self.cv2_out = cv2_out
         self.start = time()
 
-    def __call__(self, img: np.ndarray) -> None:
-        img = img.astype(np.uint8)
-        if self.backend == "ffmpeg":
-            image_bytes = img.tobytes()
-            self.ffmpeg_process.stdin.write(image_bytes)
-            self.ffmpeg_process.stdin.flush()
-        else:
-            img = img[:, :, ::-1]
-            self.cv2_out.write(img)
-        self.state += 1
-        now = time()
-        print(f"\rframe: {self.state}       fps: {self.state/(now-self.start)}", end="")
+    def __call__(self, img_batch: Sequence[np.ndarray]) -> None:
+        for img in img_batch:
+            img = cv2.resize(img, self.size)
+            img = img.astype(np.uint8)
+            if self.backend == "ffmpeg":
+                image_bytes = img.tobytes()
+                self.ffmpeg_process.stdin.write(image_bytes)
+                self.ffmpeg_process.stdin.flush()
+            else:
+                img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)  # rgb -> bgr
+                self.cv2_out.write(img)
+
+        self.published_count += len(img_batch)
+        if self.backend == "opencv":
+            now = time()
+            print(
+                f"\rframe: {self.published_count}       fps: {self.published_count/(now-self.start)}",
+                end="",
+            )
 
     def close(self) -> None:
         if self.backend == "ffmpeg":

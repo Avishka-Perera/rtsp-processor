@@ -75,7 +75,7 @@ if __name__ == "__main__":
                 np.uint8
             )
 
-            streamer(frame)
+            streamer([frame])
             published_count += 1
 
             now = time()

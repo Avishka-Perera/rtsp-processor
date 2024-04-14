@@ -1,11 +1,11 @@
 fps: 10
-batch_size: 1
 source_stream:
     url: rtsp://localhost:8554/rawstream
 processor:
     target: src.helpers.my_processor.MyProcessor
     params:
         foo: bar
+    batch_size: 1
 sink_stream:
     url: rtsp://localhost:8554/livestream
     size: [640, 480]
