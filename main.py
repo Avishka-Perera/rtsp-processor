@@ -1,9 +1,12 @@
 from multiprocessing import JoinableQueue, Process
-from src.stream.process import process_job
-from src.stream.stream import stream_job
+from rtsp_processor.stream.process import process_job
+from rtsp_processor.stream.stream import stream_job
 import yaml
 from argparse import ArgumentParser
 import os
+import sys
+
+sys.path.append(os.getcwd())
 
 
 def parse_args():

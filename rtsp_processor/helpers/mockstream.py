@@ -11,7 +11,7 @@ from PIL import Image
 import yaml
 from argparse import ArgumentParser
 import ast
-from src.stream.streamer import Streamer
+from rtsp_processor.stream.streamer import Streamer
 
 
 def parse_args():
