@@ -53,14 +53,17 @@ def parse_args():
 if __name__ == "__main__":
 
     args = parse_args()
-    with open(args.config_path) as handler:
+
+    root = os.path.join(os.path.split(__file__)[0], os.pardir, os.pardir)
+    config_path = os.path.abspath(os.path.join(root, args.config_path))
+    with open(config_path) as handler:
         config = yaml.load(handler, yaml.FullLoader)
 
     fps = config["fps"]
     sink_url = config["source_stream"]["url"]
     size = args.size
     width, height = size
-    imgs_dir = args.image_dir
+    imgs_dir = os.path.abspath(os.path.join(root, args.image_dir))
 
     streamer = Streamer(sink_url, fps, size, args.backend)
 
@@ -68,6 +71,8 @@ if __name__ == "__main__":
     published_count = 0
 
     img_lst = sorted(glob.glob(f"{imgs_dir}/**"))
+    if len(img_lst) == 0:
+        raise FileNotFoundError(f"No images foung under '{imgs_dir}'")
 
     while True:
         for i, img_path in enumerate(img_lst):

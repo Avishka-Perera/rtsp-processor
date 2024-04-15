@@ -12,6 +12,12 @@ If the user intends to use FFmpeg, they may simply create the environment from t
 bash ./install.sh
 ```
 
+It can be verified that the OpenCV installation has GStreamer enabled. This can be found using the following command.
+
+```bash
+python3 -c 'import cv2; print(cv2.getBuildInformation())'
+```
+
 **Note: This script is prepared and tested on an Ubuntu 22.04 system. The exact steps might change based on your operating system. Please refer to the official documentation in case of failure.**
 
 # Usage
