@@ -3,6 +3,7 @@ from src.stream.process import process_job
 from src.stream.stream import stream_job
 import yaml
 from argparse import ArgumentParser
+import os
 
 
 def parse_args():
@@ -29,7 +30,10 @@ def parse_args():
 if __name__ == "__main__":
 
     args = parse_args()
-    with open(args.config_path) as handler:
+
+    root = os.path.split(__file__)[0]
+    config_path = os.path.abspath(os.path.join(root, args.config_path))
+    with open(config_path) as handler:
         config = yaml.load(handler, yaml.FullLoader)
 
     image_queue = JoinableQueue()
