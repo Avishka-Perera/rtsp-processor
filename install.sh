@@ -4,13 +4,12 @@
 conda env create -f environment.yaml
 conda activate rs
 
-# install mediamtx
-mkdir mediamtx-temp && cd mediamtx-temp
+# download mediamtx
+mkdir mediamtx && cd mediamtx
 wget https://github.com/bluenviron/mediamtx/releases/download/v1.6.0/mediamtx_v1.6.0_linux_amd64.tar.gz
 tar -xzvf mediamtx_v1.6.0_linux_amd64.tar.gz
+rm mediamtx_v1.6.0_linux_amd64.tar.gz
 cd ..
-mv mediamtx-temp/mediamtx mediamtx
-rm -r mediamtx-temp
 
 # install opencv from source
 sudo apt-get install -y libgstreamer1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-rtsp gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio libavcodec-dev libavformat-dev libavutil-dev libswscale-dev

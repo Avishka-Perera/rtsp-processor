@@ -10,3 +10,4 @@ dependencies:
     - pip:
           - opencv-python==4.9.0.80
           - pyyaml==6.0.1
+          - Pillow==10.3.0
