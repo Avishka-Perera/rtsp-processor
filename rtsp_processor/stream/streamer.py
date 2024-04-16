@@ -7,14 +7,14 @@ from time import time
 
 class Streamer:
     def __init__(
-        self, url: str, fps: int, size: Sequence[int], backend: str = "opencv"
+        self, url: str, fps: int, size_hw: Sequence[int], backend: str = "opencv"
     ) -> None:
         assert backend in ["opencv", "ffmpeg"]
         self.published_count = 0
         self.url = url
         self.backend = backend
-        self.size = size
-        width, height = size
+        self.wh = size_hw[::-1]
+        height, width = size_hw
         if backend == "ffmpeg":
             ffmpeg_cmd = [
                 "ffmpeg",
@@ -57,7 +57,7 @@ class Streamer:
 
     def __call__(self, img_batch: Sequence[np.ndarray]) -> None:
         for img in img_batch:
-            img = cv2.resize(img, self.size)
+            img = cv2.resize(img, self.wh)
             img = img.astype(np.uint8)
             if self.backend == "ffmpeg":
                 image_bytes = img.tobytes()
