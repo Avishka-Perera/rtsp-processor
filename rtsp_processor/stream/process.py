@@ -1,4 +1,3 @@
-import cv2 as cv
 from multiprocessing import JoinableQueue
 from typing import Dict
 from ..util import make_obj_from_conf
@@ -10,7 +9,7 @@ def process_job(image_queue: JoinableQueue, config: Dict) -> None:
     batch_size = config["processor"]["batch_size"]
     processor_conf = config["processor"]
     processor = make_obj_from_conf(processor_conf)
-    capture = cv.VideoCapture(source_url)
+    capture = cv2.VideoCapture(source_url)
     img_batch = []
     while True:
         grabbed, frame = capture.read()
