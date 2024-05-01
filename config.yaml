@@ -1,6 +1,8 @@
 fps: 10
 source_stream:
     url: rtsp://localhost:8554/rawstream
+    input_hw: [370, 1224]
+    process_hw: [256, 896]
 processor:
     target: rtsp_processor.helpers.my_processor.MyProcessor
     params:
@@ -8,4 +10,4 @@ processor:
     batch_size: 1
 sink_stream:
     url: rtsp://localhost:8554/livestream
-    size: [640, 480]
+    size: [256, 896]

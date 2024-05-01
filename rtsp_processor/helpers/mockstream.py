@@ -24,21 +24,6 @@ def parse_args():
         help="The directory that contains the images to be streamed",
     )
     parser.add_argument(
-        "--crop-shape",
-        type=ast.literal_eval,
-        nargs="+",
-        help="Size (height, width) of the images to perform the initial center crop",
-        default=[370, 1224],
-    )
-    parser.add_argument(
-        "-s",
-        "--resize-shape",
-        type=ast.literal_eval,
-        nargs="+",
-        help="Size (height, width) of the images to perform the resizing",
-        default=[256, 832],
-    )
-    parser.add_argument(
         "-b",
         "--backend",
         type=str,
@@ -68,11 +53,10 @@ if __name__ == "__main__":
 
     fps = config["fps"]
     sink_url = config["source_stream"]["url"]
-    crop_hw = args.crop_shape
-    resize_hw = args.resize_shape
+    output_hw = config["source_stream"]["input_hw"]
     imgs_dir = os.path.abspath(os.path.join(root, args.image_dir))
 
-    streamer = Streamer(sink_url, fps, resize_hw, args.backend)
+    streamer = Streamer(sink_url, fps, output_hw, args.backend)
 
     start = time()
     published_count = 0
@@ -85,14 +69,7 @@ if __name__ == "__main__":
         for i, img_path in enumerate(img_lst):
 
             img = Image.open(img_path)
-            orig_hw = img.size[::-1]
-            top = int((orig_hw[0] - crop_hw[0]) / 2)
-            bottom = top + crop_hw[0]
-            left = int((orig_hw[1] - crop_hw[1]) / 2)
-            right = left + crop_hw[1]
-            frame = np.array(
-                img.crop((left, top, right, bottom)).resize(resize_hw[::-1])
-            ).astype(np.uint8)
+            frame = np.array(img.resize(output_hw[::-1])).astype(np.uint8)
 
             streamer([frame])
             published_count += 1
