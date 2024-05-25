@@ -1,5 +1,7 @@
 # RTSP Processor
 
+![cover](imgs/cover.png)
+
 This work contains the required scripts to listen to a Real-Time Streaming Protocol feed, modify it, and publish a new stream. This is a commonly required functionality in real-time inferencing scenarios.
 
 # Installation
@@ -26,7 +28,7 @@ To use this setup, you must have access to an RTSP stream, which needs to be pro
 
 Also to stream from your computer, an RTSP server must be up and running. We will be using Mediamtx (formerly rtsp-simple-server) for this.
 
-## Mock setup steps
+## Mock Setup Steps
 
 Each of the following should run on its own shell or in the background concurrently.
 
@@ -48,7 +50,7 @@ python  src/helpers/mockstream.py --image-dir /path/to/your/images
 python main.py
 ```
 
-## Editing the codes per user requirement
+## Editing the Configuration
 
 Once it is verified that the mock setup is working correctly, the user may edit the `config.yaml` definition per requirement.
 
